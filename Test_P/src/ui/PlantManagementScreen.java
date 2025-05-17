@@ -65,7 +65,8 @@ public class PlantManagementScreen extends Screen {
 
         panel.add(bottomPanel, BorderLayout.SOUTH);
 
-        return panel;    }
+        return panel;   
+        }
 
     // 버튼 눌렀을 때 성장도, 메시지 업데이트 (임시 구현)
     private void waterAction() {

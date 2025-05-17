@@ -1,35 +1,34 @@
 package ui;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 import model.User;
 
-public class LoginScreen extends AuthScreen {
-	
+public class SignInScreen extends AuthScreen {
+
 	private final User userManager;
 	
-	public LoginScreen(UImanager uiManager) {
+	public SignInScreen(UImanager uiManager) {
         super(uiManager);
         this.userManager = User.getInstance(); 
     }
-	
-	
+
 	@Override
 	protected String getTitleText() {
 		// TODO Auto-generated method stub
-		return "Your Green Friend Awaits - Sign in or register";
+		return "Your Green Friend Awaits - register";
 	}
 
 	@Override
 	protected String getPrimaryButtonText() {
 		// TODO Auto-generated method stub
-		return "로그인";
+		return "회원가입";
 	}
 
 	@Override
 	protected String getSecondaryButtonText() {
 		// TODO Auto-generated method stub
-		return "회원 가입";
+		return "뒤로가기";
 	}
 
 	@Override
@@ -39,22 +38,30 @@ public class LoginScreen extends AuthScreen {
         String pw = new String(pfPw.getPassword());
 
         if (id.isEmpty() || pw.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "ID와 비밀번호를 입력하세요.");
+            JOptionPane.showMessageDialog(null, "ID와 비밀번호를 모두 입력하세요.");
             return;
         }
 
-        if (userManager.login(id, pw)) {
-            JOptionPane.showMessageDialog(null, id + "님, 환영합니다!");
-            uiManager.pushScreen(new PlantSelectionScreen(uiManager));
+        if (userManager.userExists(id)) {
+            JOptionPane.showMessageDialog(null, "이미 존재하는 ID입니다.");
+            return;
+        }
+
+        if (userManager.register(id, pw)) {
+            manager.Savemanager.saveUsersToFile();
+            JOptionPane.showMessageDialog(null, "회원가입 성공! 이제 로그인할 수 있습니다.");
+            uiManager.popScreen();
         } else {
-            JOptionPane.showMessageDialog(null, "ID 또는 비밀번호가 틀렸습니다.");
+            JOptionPane.showMessageDialog(null, "회원가입에 실패했습니다.");
         }
 	}
 
 	@Override
 	protected void onSecondaryButtonClicked() {
 		// TODO Auto-generated method stub
-		uiManager.pushScreen(new SignInScreen(uiManager));
+		uiManager.popScreen();
 	}
+	
+	
 
 }
